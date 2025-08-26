@@ -1,0 +1,124 @@
+.number-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.number-input-label {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+}
+
+.number-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.number-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  box-shadow: var(--shadow-xs);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.number-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: var(--shadow-sm), 0 0 0 3px rgba(99, 102, 241, 0.1);
+  background: white;
+  transform: translateY(-1px);
+}
+
+.number-input:hover:not(:focus) {
+  border-color: var(--text-tertiary);
+  box-shadow: var(--shadow-sm);
+}
+
+.number-input:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+  border-color: var(--border-light);
+}
+
+.number-input-unit {
+  position: absolute;
+  right: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  backdrop-filter: blur(5px);
+}
+
+.number-input-hint {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-top: -0.25rem;
+}
+
+/* 当有单位时，给输入框右侧留出空间 - 修复浏览器兼容性 */
+.number-input-container .number-input-unit + .number-input,
+.number-input-container:has(.number-input-unit) .number-input {
+  padding-right: 4rem;
+}
+
+/* 对于不支持:has()的浏览器的兼容性处理 */
+@supports not (selector(:has(.number-input-unit))) {
+  .number-input-container .number-input {
+    padding-right: 1rem; /* 默认右边距 */
+  }
+  
+  /* 通过JavaScript类名来控制有单位的情况 */
+  .number-input-container.has-unit .number-input {
+    padding-right: 4rem;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .number-input {
+    font-size: 16px; /* 防止移动端缩放 */
+  }
+  
+  .number-input-unit {
+    font-size: 0.8rem;
+  }
+  
+  .number-input-hint {
+    font-size: 0.7rem;
+  }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .number-input {
+    border-width: 3px;
+  }
+  
+  .number-input:focus {
+    box-shadow: 0 0 0 3px var(--accent-color);
+  }
+}
+
+/* 减少动画偏好支持 */
+@media (prefers-reduced-motion: reduce) {
+  .number-input {
+    transition: none;
+  }
+}
