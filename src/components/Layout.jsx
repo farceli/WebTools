@@ -6,6 +6,7 @@ import SkipLink from './SkipLink'
 import './Layout.css'
 
 const tools = [
+  { id: 'calendar', name: '日历查看', path: '/calendar', icon: '📅' },
   { id: 'image-generator', name: '图片生成', path: '/image-generator', icon: '🖼️' },
   { id: 'video-generator', name: '视频生成', path: '/video-generator', icon: '🎬' },
   { id: 'file-generator', name: '附件生成', path: '/file-generator', icon: '📄' },
@@ -31,7 +32,7 @@ const commonAddresses = [
   { name: 'Scrcpy 投屏工具', url: 'https://github.com/Genymobile/scrcpy/releases', icon: '/icons/scrcpy.ico' },
   { name: 'XMind 思维导图', url: 'https://xmind.cn/', icon: '/icons/xmind.ico' },
   { name: 'GitHub 代码托管', url: 'https://github.com/', icon: '/icons/github.ico' },
-  { name: 'Escrcpy GUI 版本', url: 'https://github.com/viarotel-org/escrcpy', icon: '/icons/escrcpy5.ico' },
+  { name: 'Escrcpy GUI 版本', url: 'https://github.com/viarotel-org/escrcpy', icon: '/icons/escrcpy.ico' },
 ]
 
 function Layout({ children }) {

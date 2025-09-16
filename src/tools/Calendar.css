@@ -1,0 +1,1021 @@
+/* 日历容器 */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 1082px;
+  margin: 0 auto;
+  background: #fff;
+  font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  border: 0.5px solid #e8e8e8;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* 日历头部导航 */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #fff;
+  position: relative;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.period-selector,
+.year-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.month-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.period-select,
+.year-select,
+.month-select {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: all 0.2s ease;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  padding-right: 28px;
+}
+
+.period-select {
+  min-width: 70px;
+}
+
+.year-select {
+  min-width: 80px;
+}
+
+.month-select {
+  min-width: 60px;
+}
+
+.period-select:hover,
+.year-select:hover,
+.month-select:hover {
+  border-color: #108ee9;
+  background-color: #f5f5f5;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23108ee9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+.period-select:focus,
+.year-select:focus,
+.month-select:focus {
+  border-color: #108ee9;
+  box-shadow: 0 0 0 2px rgba(16, 142, 233, 0.2);
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23108ee9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+.nav-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-btn:hover {
+  background: #f5f5f5;
+  color: #108ee9;
+}
+
+.date-display {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #333;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  text-align: center;
+}
+
+.date-display:hover {
+  color: #108ee9;
+}
+
+.today-btn {
+  padding: 6px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 400;
+}
+
+.today-btn:hover {
+  border-color: #108ee9;
+  color: #108ee9;
+}
+
+/* 日历主体 */
+.calendar-body {
+  background: #fff;
+}
+
+/* 月视图 */
+.month-view {
+  padding: 0;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  background: #fff;
+  height: 52px;
+  padding: 0 20px;
+  align-items: center;
+  justify-items: center;
+}
+
+.weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #666;
+  background: #fff;
+  font-size: 14px;
+  height: 40px;
+}
+
+.weekday.weekend {
+  color: #e74c3c;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  padding: 20px;
+  border: none;
+  justify-items: center;
+  align-content: start;
+}
+
+.day-cell {
+  width: 80px;
+  height: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  padding: 2px;
+  gap: 1px;
+}
+
+.day-cell:hover {
+  background: #faf5ff;
+}
+
+.day-cell.current-month {
+  color: #000;
+  font-weight: 500;
+}
+
+.day-cell.other-month {
+  color: #ccc;
+  font-weight: 500;
+}
+
+.day-cell.today {
+  color: #7c3aed;
+  font-weight: 500;
+}
+
+.day-cell.today:hover {
+  background: #faf5ff;
+}
+
+.day-cell.selected {
+  background: #fff;
+  color: #7c3aed;
+  font-weight: 500;
+  border: 2px solid #7c3aed;
+}
+
+.day-cell.selected:hover {
+  background: #faf5ff;
+}
+
+.day-cell.weekend {
+  color: #e74c3c;
+}
+
+.day-cell.current-month.weekend {
+  color: #e74c3c;
+}
+
+.day-cell.other-month.weekend {
+  color: #f8b2b2;
+}
+
+.day-cell.today.weekend {
+  color: #e74c3c;
+}
+
+.day-cell.selected.weekend {
+  color: #e74c3c;
+}
+
+/* 农历样式 */
+.solar-date {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.lunar-date {
+  font-size: 10px;
+  font-weight: 400;
+  color: #999;
+  line-height: 1;
+  margin-top: 1px;
+}
+
+.day-cell.weekend .lunar-date {
+  color: #f8b2b2;
+}
+
+.day-cell.other-month .lunar-date {
+  color: #ccc;
+}
+
+.day-cell.today .lunar-date {
+  color: #7c3aed;
+}
+
+.day-cell.selected .lunar-date {
+  color: #7c3aed;
+}
+
+/* 假日样式 */
+.day-cell.holiday {
+  background: #fff2f0 !important;
+  border-color: #ff7875 !important;
+}
+
+.day-cell.holiday:hover {
+  background: #ffe7e7 !important;
+}
+
+.day-cell.holiday .solar-date {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.holiday-text {
+  color: #e74c3c !important;
+  font-weight: 500;
+}
+
+/* 调休工作日样式 */
+.day-cell.workday {
+  background: #f6f8fa !important;
+  border-color: #d1d5db !important;
+}
+
+.day-cell.workday:hover {
+  background: #e5e7eb !important;
+}
+
+.day-cell.workday .solar-date {
+  color: #374151;
+  font-weight: 600;
+}
+
+.workday-text {
+  color: #6b7280 !important;
+  font-weight: 500;
+}
+
+/* 假日状态组合 */
+.day-cell.holiday.today {
+  border-color: #7c3aed !important;
+  background: #f3e8ff !important;
+}
+
+.day-cell.holiday.today .solar-date {
+  color: #7c3aed;
+}
+
+.day-cell.holiday.selected {
+  border-color: #ff7875 !important;
+  background: #fff2f0 !important;
+}
+
+.day-cell.holiday.selected .solar-date {
+  color: #ff4d4f;
+}
+
+/* 调休工作日状态组合 */
+.day-cell.workday.today {
+  border-color: #7c3aed !important;
+  background: #f3e8ff !important;
+}
+
+.day-cell.workday.today .solar-date {
+  color: #7c3aed;
+}
+
+.day-cell.workday.selected {
+  border-color: #d1d5db !important;
+  background: #f6f8fa !important;
+}
+
+.day-cell.workday.selected .solar-date {
+  color: #374151;
+}
+
+/* 实时时间显示模块 */
+.realtime-clock {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+  text-align: center;
+}
+
+.clock-main {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.clock-date {
+  font-size: 28px;
+  font-weight: 600;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.clock-time {
+  font-size: 28px;
+  font-weight: 600;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.clock-info {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 12px;
+  margin-left: 24px;
+}
+
+.clock-weekday {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.95;
+  white-space: nowrap;
+}
+
+.clock-lunar {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.95;
+  white-space: nowrap;
+}
+
+/* 日期角标样式 */
+.date-badges {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 6px;
+  line-height: 1;
+  text-align: center;
+  min-width: 16px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-today {
+  background: #7c3aed;
+  color: #fff;
+}
+
+.badge-holiday {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.badge-workday {
+  background: #6b7280;
+  color: #fff;
+}
+
+/* 年视图 */
+.year-view {
+  padding: 20px;
+}
+
+.months-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.month-cell {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+}
+
+.month-cell:hover {
+  background: #e6f7ff;
+  border-color: #108ee9;
+  color: #108ee9;
+}
+
+.month-cell.current-month {
+  background: #108ee9;
+  border-color: #108ee9;
+  color: #fff;
+}
+
+.month-cell.current-month:hover {
+  background: #108ee9;
+  border-color: #108ee9;
+}
+
+/* 日历底部 */
+.calendar-footer {
+  padding: 16px 20px;
+  background: #fff;
+}
+
+.selected-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.selected-date {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.date-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+}
+
+.weekday-text {
+  padding: 2px 8px;
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.date-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.copy-btn {
+  padding: 4px 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 400;
+}
+
+.copy-btn:hover {
+  border-color: #108ee9;
+  color: #108ee9;
+}
+
+.copy-btn:active {
+  background: #f5f5f5;
+}
+
+/* 信息提示 */
+.calendar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px;
+  background: #f9f9f9;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.info-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.info-text {
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .calendar-container {
+    max-width: 100%;
+    margin: 0 16px;
+  }
+  
+  .calendar-header {
+    padding: 12px 16px;
+  }
+  
+  .calendar-nav {
+    gap: 16px;
+  }
+  
+  .period-selector,
+  .year-selector {
+    gap: 6px;
+  }
+  
+  .month-selector {
+    gap: 3px;
+  }
+  
+  .period-select {
+    font-size: 12px;
+    min-width: 60px;
+    padding: 3px 6px;
+  }
+  
+  .year-select {
+    font-size: 12px;
+    min-width: 70px;
+    padding: 3px 6px;
+  }
+  
+  .month-select {
+    font-size: 12px;
+    min-width: 50px;
+    padding: 3px 6px;
+  }
+  
+  .nav-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  
+  .date-display {
+    font-size: 16px;
+    min-width: 100px;
+  }
+  
+  .today-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    margin-left: 12px;
+  }
+  
+  .weekdays {
+    height: 40px;
+    gap: 2px;
+    padding: 0 12px;
+    justify-items: center;
+  }
+  
+  .weekday {
+    font-size: 12px;
+    height: 32px;
+  }
+  
+  .days-grid {
+    gap: 2px;
+    padding: 12px;
+    height: auto;
+  }
+  
+  .day-cell {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+    padding: 1px;
+    gap: 0px;
+  }
+  
+  .solar-date {
+    font-size: 12px;
+  }
+  
+  .lunar-date {
+    font-size: 8px;
+    margin-top: 0px;
+  }
+  
+  .date-badges {
+    top: 1px;
+    right: 1px;
+  }
+  
+  .badge {
+    font-size: 8px;
+    padding: 1px 3px;
+    min-width: 14px;
+    height: 12px;
+    border-radius: 4px;
+  }
+  
+  .realtime-clock {
+    padding: 18px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+  
+  .clock-main {
+    gap: 24px;
+  }
+  
+  .clock-info {
+    gap: 10px;
+    margin-left: 18px;
+    flex-direction: row;
+    align-items: flex-end;
+  }
+  
+  .clock-date {
+    font-size: 22px;
+  }
+  
+  .clock-time {
+    font-size: 22px;
+  }
+  
+  .clock-weekday {
+    font-size: 12px;
+  }
+  
+  .clock-lunar {
+    font-size: 12px;
+  }
+  
+  .year-view {
+    padding: 16px;
+  }
+  
+  .months-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  
+  .month-cell {
+    height: 60px;
+    font-size: 12px;
+  }
+  
+  .calendar-footer {
+    padding: 12px 16px;
+  }
+  
+  .selected-date {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .date-text {
+    font-size: 14px;
+  }
+  
+  .weekday-text {
+    font-size: 11px;
+    padding: 1px 6px;
+  }
+  
+  .date-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .copy-btn {
+    padding: 3px 6px;
+    font-size: 11px;
+    gap: 2px;
+  }
+  
+  .calendar-info {
+    padding: 12px 16px;
+  }
+  
+  .info-item {
+    font-size: 11px;
+    gap: 6px;
+  }
+  
+  .info-icon {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-header {
+    padding: 10px 12px;
+  }
+  
+  .calendar-nav {
+    gap: 12px;
+  }
+  
+  .period-selector,
+  .year-selector {
+    gap: 4px;
+  }
+  
+  .month-selector {
+    gap: 2px;
+  }
+  
+  .period-select {
+    font-size: 11px;
+    min-width: 50px;
+    padding: 2px 4px;
+  }
+  
+  .year-select {
+    font-size: 11px;
+    min-width: 60px;
+    padding: 2px 4px;
+  }
+  
+  .month-select {
+    font-size: 11px;
+    min-width: 40px;
+    padding: 2px 4px;
+  }
+  
+  .nav-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  
+  .date-display {
+    font-size: 14px;
+    min-width: 80px;
+  }
+  
+  .today-btn {
+    font-size: 10px;
+    padding: 3px 6px;
+    margin-left: 8px;
+  }
+  
+  .weekdays {
+    height: 36px;
+    gap: 1px;
+    padding: 0 8px;
+    justify-items: center;
+  }
+  
+  .weekday {
+    font-size: 11px;
+    height: 28px;
+  }
+  
+  .days-grid {
+    gap: 1px;
+    padding: 8px;
+    height: auto;
+  }
+  
+  .day-cell {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 3px;
+    padding: 1px;
+    gap: 0px;
+  }
+  
+  .solar-date {
+    font-size: 10px;
+  }
+  
+  .lunar-date {
+    font-size: 7px;
+    margin-top: 0px;
+  }
+  
+  .date-badges {
+    top: 1px;
+    right: 1px;
+  }
+  
+  .badge {
+    font-size: 7px;
+    padding: 1px 2px;
+    min-width: 12px;
+    height: 10px;
+    border-radius: 3px;
+  }
+  
+  .realtime-clock {
+    padding: 16px;
+    margin-bottom: 14px;
+    border-radius: 10px;
+  }
+  
+  .clock-main {
+    gap: 18px;
+  }
+  
+  .clock-info {
+    gap: 8px;
+    margin-left: 14px;
+    flex-direction: row;
+    align-items: flex-end;
+  }
+  
+  .clock-date {
+    font-size: 18px;
+  }
+  
+  .clock-time {
+    font-size: 18px;
+  }
+  
+  .clock-weekday {
+    font-size: 11px;
+  }
+  
+  .clock-lunar {
+    font-size: 11px;
+  }
+  
+  .year-view {
+    padding: 12px;
+  }
+}
+
+/* 超小屏幕 (≤360px) */
+@media (max-width: 360px) {
+  .realtime-clock {
+    flex-direction: column;
+    gap: 14px;
+    text-align: center;
+    padding: 14px;
+  }
+  
+  .clock-main {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .clock-info {
+    flex-direction: row;
+    gap: 24px;
+    justify-content: center;
+    margin-left: 0;
+  }
+  
+  .months-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .month-cell {
+    height: 50px;
+    font-size: 11px;
+  }
+  
+  .calendar-footer {
+    padding: 10px 12px;
+  }
+  
+  .selected-info {
+    gap: 6px;
+  }
+  
+  .date-text {
+    font-size: 13px;
+  }
+  
+  .weekday-text {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+  
+  .copy-btn {
+    font-size: 10px;
+    padding: 2px 4px;
+    gap: 1px;
+  }
+  
+  .calendar-info {
+    padding: 10px 12px;
+  }
+  
+  .info-item {
+    font-size: 10px;
+    gap: 4px;
+  }
+  
+  .info-icon {
+    font-size: 11px;
+  }
+}
