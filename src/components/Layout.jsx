@@ -36,7 +36,6 @@ const commonAddresses = [
 ]
 
 function Layout({ children }) {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [addressesExpanded, setAddressesExpanded] = useState(false)
@@ -51,7 +50,6 @@ function Layout({ children }) {
       const mobile = window.innerWidth <= 768
       setIsMobile(mobile)
       if (mobile) {
-        setSidebarCollapsed(false) // 移动端不使用collapsed状态
       }
     }
     
@@ -71,8 +69,6 @@ function Layout({ children }) {
   const handleSidebarToggle = () => {
     if (isMobile) {
       setSidebarOpen(!sidebarOpen)
-    } else {
-      setSidebarCollapsed(!sidebarCollapsed)
     }
   }
 
@@ -113,19 +109,18 @@ function Layout({ children }) {
         />
       )}
 
-      <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''} ${isMobile && sidebarOpen ? 'open' : ''}`}>
-        <div className="sidebar-header">
-          <h1 className="sidebar-title">
-            工具
-          </h1>
-          <button
-            className="collapse-btn"
-            onClick={handleSidebarToggle}
-            aria-label={isMobile ? (sidebarOpen ? '关闭菜单' : '打开菜单') : (sidebarCollapsed ? '展开侧边栏' : '收起侧边栏')}
-          >
-            {isMobile ? '✕' : (sidebarCollapsed ? '→' : '←')}
-          </button>
-        </div>
+      <aside className={`sidebar ${isMobile && sidebarOpen ? 'open' : ''}`}>
+        {isMobile && (
+          <div className="mobile-header">
+            <button
+              className="mobile-close-btn"
+              onClick={handleSidebarToggle}
+              aria-label={sidebarOpen ? '关闭菜单' : '打开菜单'}
+            >
+              ✕
+            </button>
+          </div>
+        )}
         
         <nav className="sidebar-nav" role="navigation" aria-label="主导航">
           {tools.map((tool) => (
@@ -136,38 +131,50 @@ function Layout({ children }) {
               aria-current={location.pathname === tool.path ? 'page' : undefined}
             >
               <span className="nav-icon" aria-hidden="true">{tool.icon}</span>
-              {(!sidebarCollapsed || isMobile) && <span className="nav-text">{tool.name}</span>}
+              <span className="nav-text">{tool.name}</span>
             </Link>
           ))}
         </nav>
 
         {/* 推荐工具区域 */}
-        {(!sidebarCollapsed || isMobile) && (
-          <div className="external-tools">
-            <div className="external-header">相关工具</div>
-            <div className="external-links">
-              {externalTools.map((tool, index) => (
-                <a
-                  key={index}
-                  href={tool.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="external-link"
-                  title={tool.name}
-                >
-                  <span className="external-icon">{tool.icon}</span>
-                </a>
-              ))}
-            </div>
+        <div className="external-tools">
+          <div className="external-header">相关工具</div>
+          <div className="external-links">
+            {externalTools.map((tool, index) => (
+              <a
+                key={index}
+                href={tool.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="external-link"
+                title={tool.name}
+              >
+                <span className="external-icon">{tool.icon}</span>
+              </a>
+            ))}
           </div>
-        )}
+        </div>
 
         {/* 常用地址区域 */}
-        {(!sidebarCollapsed || isMobile) && (
-          <div className="common-addresses">
+        <div className="common-addresses">
             <button 
               className="address-header"
-              onClick={() => setAddressesExpanded(!addressesExpanded)}
+              onClick={() => {
+                const newExpanded = !addressesExpanded
+                setAddressesExpanded(newExpanded)
+                // 如果是展开状态，延迟一点时间等待渲染完成后滚动到底部
+                if (newExpanded) {
+                  setTimeout(() => {
+                    const sidebar = document.querySelector('.sidebar')
+                    if (sidebar) {
+                      sidebar.scrollTo({
+                        top: sidebar.scrollHeight,
+                        behavior: 'smooth'
+                      })
+                    }
+                  }, 100)
+                }
+              }}
               aria-expanded={addressesExpanded}
             >
               <span className="address-title">
@@ -209,8 +216,7 @@ function Layout({ children }) {
                 ))}
               </div>
             )}
-          </div>
-        )}
+        </div>
       </aside>
 
       <main className="main-content" id="main-content">

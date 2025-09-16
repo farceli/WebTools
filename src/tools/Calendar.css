@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  max-width: 1082px;
+  max-width: 800px;
   margin: 0 auto;
   background: #fff;
   font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
@@ -293,6 +293,15 @@
   color: #ccc;
 }
 
+/* 相邻月份假期的农历日期也要弱化 */
+.day-cell.other-month.holiday .lunar-date {
+  color: #f0c0c0;
+}
+
+.day-cell.other-month.workday .lunar-date {
+  color: #e0e0e0;
+}
+
 .day-cell.today .lunar-date {
   color: #7c3aed;
 }
@@ -304,7 +313,6 @@
 /* 假日样式 */
 .day-cell.holiday {
   background: #fff2f0 !important;
-  border-color: #ff7875 !important;
 }
 
 .day-cell.holiday:hover {
@@ -321,10 +329,23 @@
   font-weight: 500;
 }
 
+/* 相邻月份的假日样式 - 弱化显示 */
+.day-cell.other-month.holiday {
+  background: rgba(255, 242, 240, 0.3) !important;
+}
+
+.day-cell.other-month.holiday:hover {
+  background: rgba(255, 231, 231, 0.4) !important;
+}
+
+.day-cell.other-month.holiday .solar-date {
+  color: #f8b2b2;
+  font-weight: 500;
+}
+
 /* 调休工作日样式 */
 .day-cell.workday {
   background: #f6f8fa !important;
-  border-color: #d1d5db !important;
 }
 
 .day-cell.workday:hover {
@@ -341,6 +362,20 @@
   font-weight: 500;
 }
 
+/* 相邻月份的调休工作日样式 - 弱化显示 */
+.day-cell.other-month.workday {
+  background: rgba(246, 248, 250, 0.3) !important;
+}
+
+.day-cell.other-month.workday:hover {
+  background: rgba(229, 231, 235, 0.4) !important;
+}
+
+.day-cell.other-month.workday .solar-date {
+  color: #d1d5db;
+  font-weight: 500;
+}
+
 /* 假日状态组合 */
 .day-cell.holiday.today {
   border-color: #7c3aed !important;
@@ -352,7 +387,6 @@
 }
 
 .day-cell.holiday.selected {
-  border-color: #ff7875 !important;
   background: #fff2f0 !important;
 }
 
@@ -371,7 +405,6 @@
 }
 
 .day-cell.workday.selected {
-  border-color: #d1d5db !important;
   background: #f6f8fa !important;
 }
 
@@ -475,6 +508,17 @@
 .badge-workday {
   background: #6b7280;
   color: #fff;
+}
+
+/* 相邻月份的角标弱化显示 */
+.day-cell.other-month .badge-holiday {
+  background: rgba(231, 76, 60, 0.4);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.day-cell.other-month .badge-workday {
+  background: rgba(107, 114, 128, 0.4);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* 年视图 */
